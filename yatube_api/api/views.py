@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
 from rest_framework import viewsets
@@ -25,6 +25,14 @@ class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     # permission_classes = (AuthorOrReadOnly,)
+
+    def get_queryset(self):
+        # our_post = get_object_or_404(Post, pk=self.kwargs.get('post_id'))
+        # new_queryset = Comment.objects.filter(post=our_post)
+        # return new_queryset
+
+        new_queryset = self.queryset.filter(post_id=self.kwargs['post_id'])
+        return new_queryset
 
     # def get_queryset(self):
     #     post_id = self.kwargs.get("post_id")

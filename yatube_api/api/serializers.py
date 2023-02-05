@@ -8,7 +8,7 @@ class CommentSerializer(serializers.ModelSerializer):
     # post = serializers.StringRelatedField(read_only=True)
 
     class Meta:
-        fields = '__all__'
+        fields = ('id', 'text', 'author', 'post', 'created')
         model = Comment
 
 
