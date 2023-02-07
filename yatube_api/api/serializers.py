@@ -8,8 +8,8 @@ class CommentSerializer(serializers.ModelSerializer):
         read_only=True,
         slug_field='username'
     )
-    # post = serializers.StringRelatedField(read_only=True)
-    post = serializers.PrimaryKeyRelatedField(queryset=Post.objects.all())
+    post = serializers.StringRelatedField(read_only=True)
+    # post = serializers.PrimaryKeyRelatedField(queryset=Post.objects.all())
 
     class Meta:
         fields = ('id', 'text', 'author', 'post', 'created')
