@@ -1,10 +1,10 @@
-from django.shortcuts import render, get_object_or_404
+# from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.generics import CreateAPIView
+# from rest_framework.generics import CreateAPIView
 
 from .serializers import PostSerializer, GroupSerializer, CommentSerializer
 from posts.models import Post, Group, Comment
