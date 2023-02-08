@@ -1,6 +1,7 @@
 # from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.response import Response
@@ -11,13 +12,33 @@ from .serializers import PostSerializer, GroupSerializer, CommentSerializer
 from posts.models import Post, Group, Comment
 
 
-class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
+# class PostViewSet(viewsets.ModelViewSet):
+class PostViewSet(viewsets.ViewSet):
+    # queryset = Post.objects.all()
+    # serializer_class = PostSerializer
     # permission_classes = [IsAuthentificated, UserOrReadOnly]
+
+    def create(self, request):
+        serializer = PostSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(author=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def list(self, request):
+        queryset = Post.objects.all()
+        serializer = PostSerializer(queryset, many=True)
+        return Response(serializer.data)
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+    def retrieve(self, request, pk=None):
+        queryset = Post.objects.all()
+        cat = get_object_or_404(queryset, pk=pk)
+        serializer = PostSerializer(cat)
+        return Response(serializer.data)
 
 
 class GroupViewSet(viewsets.ReadOnlyModelViewSet):
@@ -30,10 +51,10 @@ class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     # permission_classes = (AuthorOrReadOnly,)
 
-    def perform_update(self, serializer):
-        if serializer.instance.author != self.request.user:
-            raise PermissionDenied('Изменение чужого контента запрещено!')
-        super(PostViewSet, self).perform_update(serializer)
+    # def perform_update(self, serializer):
+    #     if serializer.instance.author != self.request.user:
+    #         raise PermissionDenied('Изменение чужого контента запрещено!')
+    #     super(PostViewSet, self).perform_update(serializer)
 
         # def get_queryset(self):
     #     # our_post = get_object_or_404(Post, pk=self.kwargs.get('post_id'))
