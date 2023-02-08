@@ -4,6 +4,7 @@
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.exceptions import PermissionDenied
 # from rest_framework.generics import CreateAPIView
 
 from .serializers import PostSerializer, GroupSerializer, CommentSerializer
@@ -29,7 +30,12 @@ class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     # permission_classes = (AuthorOrReadOnly,)
 
-    # def get_queryset(self):
+    def perform_update(self, serializer):
+        if serializer.instance.author != self.request.user:
+            raise PermissionDenied('Изменение чужого контента запрещено!')
+        super(PostViewSet, self).perform_update(serializer)
+
+        # def get_queryset(self):
     #     # our_post = get_object_or_404(Post, pk=self.kwargs.get('post_id'))
     #     # new_queryset = Comment.objects.filter(post=our_post)
     #     # return new_queryset
