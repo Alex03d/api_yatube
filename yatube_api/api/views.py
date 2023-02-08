@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.exceptions import PermissionDenied
+# from rest_framework.exceptions import PermissionDenied
 # from rest_framework.generics import CreateAPIView
 
 from .serializers import PostSerializer, GroupSerializer, CommentSerializer
@@ -24,7 +24,6 @@ class PostViewSet(viewsets.ViewSet):
             serializer.save(author=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
     def list(self, request):
         queryset = Post.objects.all()
@@ -56,7 +55,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     #         raise PermissionDenied('Изменение чужого контента запрещено!')
     #     super(PostViewSet, self).perform_update(serializer)
 
-        # def get_queryset(self):
+    # def get_queryset(self):
     #     # our_post = get_object_or_404(Post, pk=self.kwargs.get('post_id'))
     #     # new_queryset = Comment.objects.filter(post=our_post)
     #     # return new_queryset
