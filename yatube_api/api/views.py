@@ -52,16 +52,10 @@ class CommentViewSet(viewsets.ModelViewSet):
     #         return Response(serializer.data, status=status.HTTP_201_CREATED)
     #     Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
 
-    def create(self, request, post_id):
-        post = Post.objects.get(id=post_id)
-        serializer = CommentSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save(author=request.user, post=post)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    # def perform_create(self, request, post_id):
-    #     serializer = CommentSerializer(data=request.data)
+    # def create(self, request, post_id):
     #     post = Post.objects.get(id=post_id)
-    #     serializer.save(author=self.request.user, post=post)
-    #     return Response(serializer.data, status=status.HTTP_201_CREATED)
+    #     serializer = CommentSerializer(data=request.data)
+    #     if serializer.is_valid(raise_exception=True):
+    #         serializer.save(author=request.user, post=post)
+    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
