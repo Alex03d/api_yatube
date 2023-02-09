@@ -1,6 +1,6 @@
 from rest_framework import viewsets
-# from rest_framework import status
-# from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
 from .serializers import PostSerializer, GroupSerializer, CommentSerializer
@@ -52,13 +52,10 @@ class CommentViewSet(viewsets.ModelViewSet):
     #         return Response(serializer.data, status=status.HTTP_201_CREATED)
     #     Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
 
-    # def create(self, request, post_id):
-    #     post = Post.objects.get(id=post_id)
-    #     serializer = CommentSerializer(data=request.data)
-    #     if serializer.is_valid(raise_exception=True):
-    #         serializer.save(author=request.user, post=post)
-    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    #     return Response(
-    #     serializer.errors,
-    #     status=status.HTTP_400_BAD_REQUEST
-    #     )
+    def create(self, request, post_id):
+        post = Post.objects.get(id=post_id)
+        serializer = CommentSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(author=request.user, post=post)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
