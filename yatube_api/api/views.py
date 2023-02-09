@@ -11,7 +11,7 @@ from posts.models import Post, Group, Comment
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthorOrReadOnlyPermission, IsAuthenticated,)
     # permission_classes = (IsAuthorOrReadOnlyPermission,)
     # permission_classes = [IsAuthenticated, UserOrReadOnly]
 
