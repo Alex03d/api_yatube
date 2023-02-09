@@ -13,7 +13,6 @@ router.register(
     CommentViewSet,
     basename='comments'
 )
-# router.register('api/v1/comments', CommentViewSet, basename='comments')
 router.register('api/v1/posts', PostViewSet, basename='posts')
 router.register('api/v1/groups', GroupViewSet, basename='groups')
 
