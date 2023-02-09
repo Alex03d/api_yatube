@@ -3,12 +3,14 @@ from rest_framework import status
 from rest_framework.response import Response
 
 from .serializers import PostSerializer, GroupSerializer, CommentSerializer
+from .permissions import IsAuthorOrReadOnlyPermission
 from posts.models import Post, Group, Comment
 
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    permission_classes = (IsAuthorOrReadOnlyPermission,)
     # permission_classes = [IsAuthentificated, UserOrReadOnly]
 
     def perform_create(self, serializer):
@@ -23,6 +25,7 @@ class GroupViewSet(viewsets.ReadOnlyModelViewSet):
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+    permission_classes = (IsAuthorOrReadOnlyPermission,)
     # permission_classes = (AuthorOrReadOnly,)
 
     # def get_queryset(self):
