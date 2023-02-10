@@ -1,5 +1,4 @@
-from rest_framework import viewsets
-from rest_framework import status
+from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
@@ -23,9 +22,13 @@ class GroupViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.all()
+    # queryset = Comment.objects.filter(post=1)
     serializer_class = CommentSerializer
     permission_classes = (IsAuthorOrReadOnlyPermission, IsAuthenticated,)
+
+    def get_queryset(self):
+        post_id = self.kwargs['post_id']
+        return Comment.objects.filter(post=post_id)
 
     def create(self, request, post_id):
         post = Post.objects.get(id=post_id)
