@@ -1,7 +1,5 @@
 from rest_framework import viewsets
-# status
 from rest_framework.permissions import IsAuthenticated
-# from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 
 from posts.models import Comment, Group, Post
@@ -31,19 +29,6 @@ class CommentViewSet(viewsets.ModelViewSet):
         post_id = self.kwargs['post_id']
         return Comment.objects.filter(post=post_id)
 
-    # def create(self, request, post_id):
-    #     post = Post.objects.get(id=post_id)
-    #     serializer = CommentSerializer(data=request.data)
-    #     if serializer.is_valid(raise_exception=True):
-    #         serializer.save(author=request.user, post=post)
-    #         return Response(
-    #             serializer.data,
-    #             status=status.HTTP_201_CREATED
-    #         )
-    #     return Response(
-    #         serializer.errors,
-    #         status=status.HTTP_400_BAD_REQUEST
-    #     )
     def perform_create(self, serializer):
         post = get_object_or_404(Post, pk=self.kwargs.get('post_id'))
         serializer.save(author=self.request.user, post=post)
